@@ -50,7 +50,7 @@ func main() {
 	srv := http.Server{
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			switch r.Host {
-			case "jadenw.space", "www.jadenw.space":
+			case "jadendw.dev", "www.jadendw.dev":
 				huprox.ServeHTTP(w, r)
 			default:
 				http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
