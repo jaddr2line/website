@@ -1,0 +1,13 @@
+version: '3'
+services:
+  proxy:
+    build: ./jprox
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./secrets:/srv/secrets
+  hugo:
+    build: ./hugo
+    volumes:
+      - ./hugo/site:/site

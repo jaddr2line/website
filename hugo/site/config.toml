@@ -1,0 +1,19 @@
+baseURL = "https://jadenw.space/"
+languageCode = "en-us"
+title = "Jaden Weiss"
+theme = "binario"
+
+[Params]
+  description = "Jaden's Website"
+  mainSections = ["posts"]
+  mathjax = true
+  authorbox = true
+
+[Author]
+  name = "Jaden Weiss"
+  avatar = "/img/avatar.png"
+  copyright = "Jaden Weiss"
+  bio = "Just another gopher."
+
+[Params.Social]
+  github = "jadr2ddude"
