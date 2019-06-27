@@ -7,6 +7,8 @@ services:
       - "80:80"
     volumes:
       - ./secrets:/srv/secrets
+    links:
+      - hugo
   hugo:
     build: ./hugo
     volumes:
