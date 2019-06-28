@@ -49,9 +49,7 @@ func main() {
 	signal.Notify(c, os.Interrupt)
 
 	memeRoute := http.NewServeMux()
-	memeRoute.HandleFunc("/vgrind/", func(w http.ResponseWriter, r *http.Request) {
-		vgrindprox.ServeHTTP(w, r)
-	})
+	memeRoute.Handle("/vgrind/", http.StripPrefix("/vgrind/", vgrindprox))
 
 	srv := http.Server{
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
