@@ -52,6 +52,8 @@ func main() {
 			switch r.Host {
 			case "jadendw.dev", "www.jadendw.dev":
 				huprox.ServeHTTP(w, r)
+			case "jadendw.com", "www.jadendw.com":
+				http.Redirect(w, r, "https://jadendw.dev", http.StatusMovedPermanently)
 			default:
 				http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 			}
