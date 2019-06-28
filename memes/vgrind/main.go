@@ -76,7 +76,7 @@ func main() {
 		defer cancel()
 
 		cmd := exec.CommandContext(ctx, "docker", "run", "-m", "100m", "--cpus=1", "--rm", "-i", "jadendw.dev/vgrind")
-		cmd.Stdin = r.Body
+		cmd.Stdin = io.LimitReader(r.Body, 1*1024*1024)
 		cmd.Stdout = w
 		cmd.Stderr = w
 		err := cmd.Run()
