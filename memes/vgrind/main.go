@@ -72,7 +72,7 @@ func main() {
 			return
 		}
 
-		cmd := exec.CommandContext(r.Context(), "docker", "run", "--rm", "-i", "jadendw.dev/vgrind")
+		cmd := exec.CommandContext(r.Context(), "docker", "run", "--rm", "-i", "jadendw.dev/vgrind", "-m", "100m")
 		cmd.Stdin = r.Body
 		cmd.Stdout = w
 		cmd.Stderr = w
