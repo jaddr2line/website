@@ -7,7 +7,7 @@ draft: false
 Today, I decided to create a website for myself, to host random code and blog about (mostly) programming.
 
 # Tech Stack
-To build this blog, I used [Hugo](https://gohugo.io/) with the [Binario](https://github.com/vimux/binario) theme. To host this, I ran Hugo and a custom reverse proxy with docker-compose on a VM on Google Cloud Platform.
+To build this blog, I used [Hugo](https://gohugo.io/) with the [Binario](https://github.com/vimux/binario) theme. To host this, I ran Hugo and a [custom reverse proxy](https://github.com/jadr2ddude/website/blob/master/jprox/main.go) with docker-compose on a VM on Google Cloud Platform.
 I am using Cloudflare for DNS and HTTPS.
 
 In the past, I have used a lot of web hosting tech, some of which worked out well and some of which did not.
