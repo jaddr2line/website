@@ -75,7 +75,7 @@ func main() {
 		ctx, cancel := context.WithTimeout(r.Context(), time.Minute)
 		defer cancel()
 
-		cmd := exec.CommandContext(ctx, "docker", "run", "--rm", "-i", "jadendw.dev/vgrind", "-m", "100m")
+		cmd := exec.CommandContext(ctx, "docker", "run", "-m", "100m", "--cpus=1", "--rm", "-i", "jadendw.dev/vgrind")
 		cmd.Stdin = r.Body
 		cmd.Stdout = w
 		cmd.Stderr = w
