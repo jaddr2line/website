@@ -36,6 +36,7 @@ func serverCtx(ctx context.Context, wg *sync.WaitGroup, srv *http.Server) {
 
 func main() {
 	huprox := httputil.NewSingleHostReverseProxy(forceParse("http://hugo:1313/"))
+	vgrindprox := httputil.NewSingleHostReverseProxy(forceParse("http://vgrind/"))
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -47,11 +48,18 @@ func main() {
 	}()
 	signal.Notify(c, os.Interrupt)
 
+	memeRoute := http.NewServeMux()
+	memeRoute.HandleFunc("/vgrind/", func(w http.ResponseWriter, r *http.Request) {
+		vgrindprox.ServeHTTP(w, r)
+	})
+
 	srv := http.Server{
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			switch r.Host {
 			case "jadendw.dev", "www.jadendw.dev":
 				huprox.ServeHTTP(w, r)
+			case "memes.jadenw.dev":
+				memeRoute.ServeHTTP(w, r)
 			case "jadendw.com", "www.jadendw.com":
 				http.Redirect(w, r, "https://jadendw.dev", http.StatusMovedPermanently)
 			default:
@@ -77,4 +85,5 @@ func main() {
 
 	log.Println("server running")
 	<-ctx.Done()
+	log.Println("goodbye")
 }
