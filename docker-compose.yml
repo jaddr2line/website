@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3'
 services:
   proxy:
     build: ./jprox
@@ -12,8 +12,4 @@ services:
   hugo:
     build: ./hugo
     volumes:
-      - type: bind
-        source: "./hugo/site"
-        target: "/site"
-        volume:
-          consistency: consistent
+      - ./hugo/site:/site
