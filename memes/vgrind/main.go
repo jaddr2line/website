@@ -61,7 +61,11 @@ func main() {
 			w.Write([]byte("ready"))
 		}
 	})
+	var lck sync.Mutex
 	http.HandleFunc("/vgrind", func(w http.ResponseWriter, r *http.Request) {
+		lck.Lock() //limit to one concurrent op
+		defer lck.Unlock()
+
 		if atomic.LoadUint32(&status) != 1 {
 			http.Error(w, "not ready", http.StatusServiceUnavailable)
 			return
