@@ -69,16 +69,6 @@ func main() {
 		defer wg.Done()
 		defer cancel()
 
-		err := srv.ListenAndServe()
-		if err != nil && ctx.Err() == nil {
-			log.Printf("http server failed: %s", err)
-		}
-	}()
-
-	go func() {
-		defer wg.Done()
-		defer cancel()
-
 		err := srv.ListenAndServeTLS("/srv/secrets/proxy.pem", "/srv/secrets/proxy.key")
 		if err != nil && ctx.Err() == nil {
 			log.Printf("https server failed: %s", err)
