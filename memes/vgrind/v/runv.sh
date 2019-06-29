@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set +e
+set -e
 
 cat meta.txt
 echo "Loading source. . ."
