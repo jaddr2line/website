@@ -6,4 +6,6 @@ run CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go install -v github.com/jadr2ddude/we
 from scratch
 copy --from=builder /go/bin/jprox /bin/jprox
 copy --from=builder /usr/share/ca-certificates /usr/share/ca-certificates
+copy ./memes/* /root/memes/
+workdir /root
 entrypoint ["/bin/jprox"]

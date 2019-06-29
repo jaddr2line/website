@@ -49,6 +49,7 @@ func main() {
 	signal.Notify(c, os.Interrupt)
 
 	memeRoute := http.NewServeMux()
+	memeRoute.Handle("/", http.FileServer(http.Dir("memes")))
 	memeRoute.Handle("/vgrind/", http.StripPrefix("/vgrind/", vgrindprox))
 
 	srv := http.Server{
