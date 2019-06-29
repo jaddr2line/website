@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+        <head>
+                <meta charset="utf-8">
+                <title>V Valgrind Memory Leak Check</title>
+        </head>
+        <body>
+                <form id="in">
+                        <textarea name="code" rows="8" cols="80" placeholder="enter V code here"></textarea>
+                        <input type="submit" value="Submit">
+                </form>
+                <br>
+                <br>
+                <pre><code id="out">Nothing yet.</code></pre>
+                <script type="text/javascript">
+                        var e = (id) => document.getElementById(id)
+                        var txt = (str) => document.createTextNode(str)
+                        var elem = (t) => document.createElement(t)
+
+                        var inf = e('in')
+                        var out = e('out')
+
+                        function vgrind(code) {
+                                return new Promise((resolve, reject) => {
+                                        fetch('vgrind', {
+                                                method: 'POST',
+                                                body: code,
+                                        }).then((resp) => {
+                                                if(resp.status != 200) {
+                                                        reject(resp.statusText)
+                                                        return
+                                                }
+
+                                                resp.text().then(resolve, reject)
+                                        }, reject)
+                                })
+                        }
+
+                        inf.onsubmit = (ev) => {
+                                var code = (new FormData(inf)).get('code')
+                                inf.reset()
+                                vgrind(code).then((res) => {
+                                        out.innerHTML = ''
+                                        out.appendChild(txt(res))
+                                }, (err) => {
+                                        out.innerHTML = ''
+                                        out.appendChild(txt('Failed to load: '+String(err)))
+                                })
+                                out.innerHTML = 'Loading. . . '
+                                return false
+                        }
+                </script>
+        </body>
+</html>

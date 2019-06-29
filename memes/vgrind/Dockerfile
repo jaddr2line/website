@@ -8,5 +8,6 @@ run apk --no-cache add docker
 copy --from=builder /go/bin/vgrind /bin/vgrind
 copy --from=builder /usr/share/ca-certificates /usr/share/ca-certificates
 add ./v /root/v
+add ./index.html /root/v/static/
 workdir /root/v
 entrypoint ["/bin/vgrind"]

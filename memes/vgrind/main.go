@@ -52,6 +52,8 @@ func main() {
 	}()
 	signal.Notify(c, os.Interrupt)
 
+	http.Handle("/", http.FileServer(http.Dir("static")))
+
 	var status uint32
 	http.HandleFunc("/status", func(w http.ResponseWriter, r *http.Request) {
 		switch atomic.LoadUint32(&status) {
