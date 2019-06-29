@@ -5,6 +5,15 @@
                 <title>V Valgrind Memory Leak Check</title>
         </head>
         <body>
+                <div>
+                        This page runs V scripts like a playground, except it runs them with Valgrind.
+                        Valgrind is a tool to find memory leaks.
+                        For these purposes, Valgrind is set to be fairly verbose.
+                        Due to technical limitations, scripts using stdin or graphics will not function properly.
+                        <br>
+                        Enjoy!
+                </div>
+                <br>
                 <form id="in">
                         <textarea name="code" rows="8" cols="80" placeholder="enter V code here"></textarea>
                         <input type="submit" value="Submit">
