@@ -105,6 +105,7 @@ That turned out to be incorrect, but was close enough to the truth that I now kn
 I began researching the hardware of the Samsung Galaxy S9 to try to figure out what exactly was happening. Strangely, there are 2 versions of the S9 — one for North America, and one for the rest of the world. The North American version uses the Qualcomm Snapdragon 845 processor, and the other version uses the Samsung Exynos 9810 processor. The phone on which the bug was discovered was purchased in Germany, so I narrowed the problem down to the Exynos 9810.
 
 On WikiChip I found the specifications for the Exynos 9810.
+
 > The processor is fabricated on Samsung’s 10 nm process and features 8 cores in a DynamiQ configuration consisting of 4 Mongoose 3 big cores operating at 2.9 GHz and 4 Cortex-A55 little cores operating at 1.9 GHz. — [WikiChip](https://en.wikichip.org/wiki/samsung/exynos/9810)
 
 What? Mongoose 3 does not sound like a name ARM would use for their CPUs. Then I noticed that the CPU implementer IDs were different. Samsung designed the Mongoose 3 big core, and ARM designed the Cortex-A55 LITTLE core. Mongoose 3 uses ARMv8.0, and Cortex-A55 uses ARMv8.2. So my original determination that the big cores were 1 minor revision ahead was incorrect — the LITTLE cores were actually 2 minor revisions ahead.
