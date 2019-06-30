@@ -47,7 +47,6 @@
 
                         inf.onsubmit = (ev) => {
                                 var code = (new FormData(inf)).get('code')
-                                inf.reset()
                                 vgrind(code).then((res) => {
                                         out.innerHTML = ''
                                         out.appendChild(txt(res))
