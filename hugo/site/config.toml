@@ -17,3 +17,7 @@ theme = "binario"
 
 [Params.Social]
   github = "jadr2ddude"
+  gitlab = "jadr2ddude"
+  twitter = "CompuJad"
+  mastodon = "@jadenw@mst3k.interlinked.me"
+  linkedin = "jaden-weiss"
