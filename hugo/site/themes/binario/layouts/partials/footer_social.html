@@ -2,7 +2,7 @@
 <div class="footer__social social">
 	{{- range sort .Site.Data.social.icons "weight" }}
 		{{- if isset $.Site.Params.Social .id }}
-		<a class="social__link" target="_blank" rel="noopener noreferrer" href="{{if eq .id "mastodon"}}{{partial "footer_social_mastodonurl.tmpl" (index $.Site.Params.Social .id)}}{{else}}{{printf .url (index $.Site.Params.Social .id)}}{{end}}">
+		<a class="social__link" target="_blank" rel="noopener noreferrer" href="{{ printf .url (index $.Site.Params.Social .id) }}">
 			{{ partial .icon (dict "class" "social__icon") }}
 		</a>
 		{{- end }}

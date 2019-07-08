@@ -4,7 +4,7 @@ set -e
 
 cd $(dirname $0)
 
-export binario_commit=831aa8c368c54215e8a1b4af4c0b522465c5e847
+export binario_commit=ec26d2e882963d500f9ddba8a9e87ae70024542b
 
 rm -rf site/themes/binario
 mkdir site/themes/binario
