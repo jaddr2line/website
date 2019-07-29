@@ -65,6 +65,7 @@ func splitFirst(path string) (first string, rest string) {
 func main() {
 	huprox := httputil.NewSingleHostReverseProxy(forceParse("http://hugo:1313/"))
 	vgrindprox := httputil.NewSingleHostReverseProxy(forceParse("http://vgrind/"))
+	athensprox := httputil.NewSingleHostReverseProxy(forceParse("http://athens:3000/"))
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -86,6 +87,8 @@ func main() {
 			huprox.ServeHTTP(w, r)
 		case "memes.jadendw.dev":
 			memeRoute.ServeHTTP(w, r)
+		case "goproxy.jadendw.dev":
+			athensprox.ServeHTTP(w, r)
 		case "jadendw.com", "www.jadendw.com":
 			http.Redirect(w, r, "https://jadendw.dev", http.StatusMovedPermanently)
 		default:
