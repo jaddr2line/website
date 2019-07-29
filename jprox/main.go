@@ -8,6 +8,8 @@ import (
 	"net/url"
 	"os"
 	"os/signal"
+	"path/filepath"
+	"strings"
 	"sync"
 	"time"
 )
@@ -34,6 +36,32 @@ func serverCtx(ctx context.Context, wg *sync.WaitGroup, srv *http.Server) {
 	}()
 }
 
+func shouldEnableHTTPS() (bool, error) {
+	_, err := os.Stat("/srv/secrets/proxy.pem")
+	if err == nil {
+		return true, nil
+	}
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+	return false, err
+}
+
+func splitFirst(path string) (first string, rest string) {
+	path = filepath.Clean(path)
+	path = strings.TrimPrefix(path, "/")
+	if !strings.HasSuffix(path, "/") {
+		path += "/"
+	}
+	for i, b := range []byte(path) {
+		//intentionally using byte not rune for consistency with stdlib
+		if b == '/' {
+			return path[:i], path[i:]
+		}
+	}
+	return "", rest
+}
+
 func main() {
 	huprox := httputil.NewSingleHostReverseProxy(forceParse("http://hugo:1313/"))
 	vgrindprox := httputil.NewSingleHostReverseProxy(forceParse("http://vgrind/"))
@@ -52,19 +80,38 @@ func main() {
 	memeRoute.Handle("/", http.FileServer(http.Dir("memes")))
 	memeRoute.Handle("/vgrind/", http.StripPrefix("/vgrind/", vgrindprox))
 
-	srv := http.Server{
-		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			switch r.Host {
-			case "jadendw.dev", "www.jadendw.dev":
-				huprox.ServeHTTP(w, r)
-			case "memes.jadendw.dev":
-				memeRoute.ServeHTTP(w, r)
-			case "jadendw.com", "www.jadendw.com":
-				http.Redirect(w, r, "https://jadendw.dev", http.StatusMovedPermanently)
-			default:
-				http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+	hfunc := func(w http.ResponseWriter, r *http.Request) {
+		switch r.Host {
+		case "jadendw.dev", "www.jadendw.dev":
+			huprox.ServeHTTP(w, r)
+		case "memes.jadendw.dev":
+			memeRoute.ServeHTTP(w, r)
+		case "jadendw.com", "www.jadendw.com":
+			http.Redirect(w, r, "https://jadendw.dev", http.StatusMovedPermanently)
+		default:
+			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+		}
+	}
+
+	https, err := shouldEnableHTTPS()
+	if err != nil {
+		panic(err)
+	}
+
+	if !https {
+		ohfunc := hfunc
+		hfunc = func(w http.ResponseWriter, r *http.Request) {
+			if !strings.HasSuffix(r.Host, ".localhost") {
+				http.Redirect(w, r, "http://jadendw.dev.localhost/", http.StatusTemporaryRedirect)
+				return
 			}
-		}),
+			r.Host = strings.TrimSuffix(r.Host, ".localhost")
+			ohfunc(w, r)
+		}
+	}
+
+	srv := http.Server{
+		Handler: http.HandlerFunc(hfunc),
 	}
 
 	var wg sync.WaitGroup
@@ -76,9 +123,18 @@ func main() {
 		defer wg.Done()
 		defer cancel()
 
-		err := srv.ListenAndServeTLS("/srv/secrets/proxy.pem", "/srv/secrets/proxy.key")
-		if err != nil && ctx.Err() == nil {
-			log.Printf("https server failed: %s", err)
+		if https {
+			log.Println("enabling https. . . ")
+			err := srv.ListenAndServeTLS("/srv/secrets/proxy.pem", "/srv/secrets/proxy.key")
+			if err != nil && ctx.Err() == nil {
+				log.Printf("https server failed: %s", err)
+			}
+		} else {
+			log.Println("enabling http. . . ")
+			err := srv.ListenAndServe()
+			if err != nil && ctx.Err() == nil {
+				log.Printf("http server failed: %s", err)
+			}
 		}
 	}()
 
