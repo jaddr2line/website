@@ -6,7 +6,7 @@ theme = "binario"
 [Params]
   description = "Jaden's Website"
   mainSections = ["posts"]
-  mathjax = true
+  mathjax = false
   authorbox = true
 
 [Author]
