@@ -1,4 +1,4 @@
-baseURL = "https://jadenw.space/"
+baseURL = "https://jadendw.dev/"
 languageCode = "en-us"
 title = "Jaden Weiss"
 theme = "binario"
@@ -16,8 +16,8 @@ theme = "binario"
   bio = "Just another gopher."
 
 [Params.Social]
-  github = "jadr2ddude"
-  gitlab = "jadr2ddude"
-  twitter = "CompuJad"
+  github = "jaddr2line"
+  gitlab = "jaddr2line"
+  twitter = "jaddr2line"
   mastodon = "https://mst3k.interlinked.me/@jadenw"
   linkedin = "jaden-weiss"
