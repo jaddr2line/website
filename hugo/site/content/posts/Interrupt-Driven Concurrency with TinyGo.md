@@ -19,7 +19,7 @@ If an interrupt unblocks a goroutine that was waiting on a channel, this wakes u
 Timer interrupts are one of the easiest kinds of interrupts to work with.
 We are going to use the "systick" interrupt included on many ARM CPU cores as a timer, and use this to blink morse code with an LED.
 
-_NOTE: all included code snippets have been tested tested on an [Arduino Nano 33 IoT](https://store.arduino.cc/usa/nano-33-iot) and an [Adafruit Metro M4 Express AirLift](https://www.adafruit.com/product/4000)_
+_NOTE: all included code snippets have been tested on an [Arduino Nano 33 IoT](https://store.arduino.cc/usa/nano-33-iot) and an [Adafruit Metro M4 Express AirLift](https://www.adafruit.com/product/4000)_
 
 ## Morse Code
 
