@@ -86,7 +86,7 @@ func main() {
 		case "jadendw.dev", "www.jadendw.dev":
 			huprox.ServeHTTP(w, r)
 		case "memes.jadendw.dev":
-			memeRoute.ServeHTTP(w, r)
+			http.Redirect(w, r, "https://jadendw.dev", http.StatusTemporaryRedirect)
 		case "goproxy.jadendw.dev":
 			athensprox.ServeHTTP(w, r)
 		case "jadendw.com", "www.jadendw.com":

@@ -9,18 +9,13 @@ services:
       - ./secrets:/srv/secrets
     links:
       - hugo
-      - vgrind
       - athens
   hugo:
     build: ./hugo
     volumes:
       - ./hugo/site:/site
-  vgrind:
-    build: ./memes/vgrind
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
   athens:
-    image: gomods/athens:v0.5.0
+    image: gomods/athens:v0.10.0
     volumes:
       - ./storage/athens:/var/lib/athens
     environment:
